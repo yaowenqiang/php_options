@@ -3,9 +3,20 @@
         "phpoption/phpoption": "^1.7",
         "vlucas/phpdotenv": "^4.1",
         "monolog/monolog": "^1.25",
-        "pimple/pimple": "^3.2"
+        "pimple/pimple": "^3.2",
+        "symfony/console": "^4.4",
+        "symfony/event-dispatcher": "^4.4",
+        "symfony/dependency-injection": "^4.4",
+        "symfony/lock": "^4.4",
+        "symfony/process": "^4.4",
+        "symfony/config": "^4.4"
     },
     "require-dev": {
         "symfony/var-dumper": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Commands\\" : "commands/"
+        }
     }
 }
