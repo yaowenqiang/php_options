@@ -12,8 +12,16 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LogstashFormatter;
 use Monolog\Formatter\LineFormatter;
 use Pimple\Container;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 require "vendor/autoload.php";
+
+$stopWatch = new Stopwatch();
+$stopWatch->start('myevent');
+sleep(1);
+$event = $stopWatch->stop('myevent');
+$event->getPeriods();
+$event->getDuration();
 
 $container = new Container();
 $container['logger'] = function ($c) {
@@ -64,4 +72,7 @@ dump($env);
 $logger = $container['logger'];
 $logger->info("hello");
 $logger->warn("world");
+
+
+
 
