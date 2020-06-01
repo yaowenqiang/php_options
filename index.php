@@ -13,8 +13,39 @@ use Monolog\Formatter\LogstashFormatter;
 use Monolog\Formatter\LineFormatter;
 use Pimple\Container;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Finder\Finder;
+
+
 
 require "vendor/autoload.php";
+
+
+$whoops = new \Whoops\Run;
+
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+$whoops->register();
+
+$a = new B();
+
+$finder = new Finder();
+$finder->ignoreVCS(true);
+$finder->ignoreUnreadableDirs()->in(__DIR__);
+$finder->date('since yesterday');
+foreach ($finder as $item) {
+    dump($item);
+}
+$finder->depth('== 0');
+$filter = function (\SplFileInfo $file) {
+    if (strlen($file) > 10) {
+        return false;
+    }
+};
+$finder->files()->filter($filter);
+$finder->sortByAccessedTime();
+$finder->sort(function (\SplFileInfo $a, SplFileInfo $b) {
+    return strcmp($a->getRealPath(), $b->getRealPath());
+});
+
 
 $stopWatch = new Stopwatch();
 $stopWatch->start('myevent');
