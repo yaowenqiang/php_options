@@ -14,11 +14,52 @@ use Monolog\Formatter\LineFormatter;
 use Pimple\Container;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
+use Mail\Mailer;
 
+
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+
+use Symfony\Component\Translation\Loader\PhpFileLoader;
 
 
 require "vendor/autoload.php";
 
+$containerBuilder = new ContainerBuilder();
+$containerBuilder
+    ->register('mailer', "Mailer")
+    ->addArgument('sendmail');
+
+$containerBuilder
+    ->setParameter('mail.transport', 'sendmail');
+
+$containerBuilder
+    ->register('mailer', 'Mail')
+    ->addArgument('%mail.transport%');
+
+$containerBuilder->register('newsletter_manager', "NewsletterManager")
+    ->addArgument(new Reference('mailer'))
+    ->addMethodCall('setMailer', [new Reference('mailer')]);
+;
+
+
+$newsletterManager = $containerBuilder->get('newsletter_manager');
+
+
+
+$loader = new XmlFileLoader($containerBuilder, new FileLocator(__DIR__));
+$loader->load('services.xml');
+
+$loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__));
+$loader->load('services.yaml');
+//$loader->load('services.config', 'xml');
+
+$loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
+$loader->load('services.php');
 
 $whoops = new \Whoops\Run;
 
