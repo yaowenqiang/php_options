@@ -26,8 +26,24 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 use Symfony\Component\Translation\Loader\PhpFileLoader;
 
+use Symfony\Component\Form\Forms;
+
+use Symfony\Component\HttpClient\HttpClient;
+
+
 
 require "vendor/autoload.php";
+
+
+$client = HttpClient::create();
+
+$response = $client->request('GET','api.github.com/repos/symfony/symfony-docs');
+$statusCode = $response->getStatusCode();
+$contentType = $response->getHeaders()['content-type'][0];
+$content = $response->getContent();
+$content = $response->toArray();
+
+$formFactory = Forms::createFormFactory();
 
 $containerBuilder = new ContainerBuilder();
 $containerBuilder
@@ -76,7 +92,7 @@ foreach ($finder as $item) {
     dump($item);
 }
 $finder->depth('== 0');
-$filter = function (\SplFileInfo $file) {
+$filter = topnnnggnnunction (\SplFileInfo $file) {
     if (strlen($file) > 10) {
         return false;
     }
