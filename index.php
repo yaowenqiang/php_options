@@ -30,10 +30,17 @@ use Symfony\Component\Form\Forms;
 
 use Symfony\Component\HttpClient\HttpClient;
 
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+
+
 
 
 require "vendor/autoload.php";
 
+
+$expressionLanguage = new ExpressionLanguage();
+dump($expressionLanguage->evaluate("1 + 2"));
+dump($expressionLanguage->compile("1 + 2"));
 
 $client = HttpClient::create();
 
