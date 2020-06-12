@@ -33,9 +33,20 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 
 
 require "vendor/autoload.php";
+
+$encoder = [new XmlEncoder(),new JsonEncode()];
+$normalizer = [new ObjectNormalizer()];
+$seriqalizer = new Serializer($normalizer, $encoder);
+
+
 
 
 $expressionLanguage = new ExpressionLanguage();
