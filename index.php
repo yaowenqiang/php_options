@@ -38,9 +38,22 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+use Symfony\Component\HttpFoundation\Request;
+
 
 
 require "vendor/autoload.php";
+
+$request = Request::CreateFromGlobals();
+
+$request->query->get('foo');
+
+$request->query->get('foo', 'bar');
+
+//?foo[bar]=baz
+$request->query->get('foo');
+$request->query->get('foo[bar]');
+$request->query->get('foo')['bar'];
 
 $encoder = [new XmlEncoder(),new JsonEncode()];
 $normalizer = [new ObjectNormalizer()];

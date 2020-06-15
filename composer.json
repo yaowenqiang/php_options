@@ -20,7 +20,8 @@
         "symfony/expression-language": "^5.1",
         "symfony/var-dumper": "^5.1",
         "symfony/string": "^5.1",
-        "symfony/serializer": "^5.1"
+        "symfony/serializer": "^5.1",
+        "symfony/http-foundation": "^5.1"
     },
     "require-dev": {
     },
