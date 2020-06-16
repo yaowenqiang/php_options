@@ -43,6 +43,38 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 require "vendor/autoload.php";
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+$whoops->register();
+
+
+class A {
+    public static function who()
+    {
+       echo __CLASS__;
+       dump(new self());
+    }
+
+    public static function test()
+    {
+        self::who();
+    }
+
+    public static function test2()
+    {
+        static::who();
+    }
+}
+
+class B extends A{
+    public static function who()
+    {
+        echo __CLASS__;
+   }
+}
+
+B::test();
+B::test2();
 
 $request = Request::CreateFromGlobals();
 
@@ -54,6 +86,8 @@ $request->query->get('foo', 'bar');
 $request->query->get('foo');
 $request->query->get('foo[bar]');
 $request->query->get('foo')['bar'];
+
+
 
 $encoder = [new XmlEncoder(),new JsonEncode()];
 $normalizer = [new ObjectNormalizer()];
@@ -108,10 +142,6 @@ $loader->load('services.yaml');
 $loader = new PhpFileLoader($containerBuilder, new FileLocator(__DIR__));
 $loader->load('services.php');
 
-$whoops = new \Whoops\Run;
-
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-$whoops->register();
 
 $a = new B();
 
@@ -123,7 +153,7 @@ foreach ($finder as $item) {
     dump($item);
 }
 $finder->depth('== 0');
-$filter = topnnnggnnunction (\SplFileInfo $file) {
+$filter = function(SplFileInfo $file) {
     if (strlen($file) > 10) {
         return false;
     }
