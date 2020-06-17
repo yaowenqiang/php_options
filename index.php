@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Mail\Mailer;
 
+use Symfony\Component\HttpKernel\HttpKernel;
+
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -40,12 +42,30 @@ use Symfony\Component\Serializer\Serializer;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Composer\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+
+
+
+
 
 
 require "vendor/autoload.php";
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
 $whoops->register();
+
+$request = Request::createFromGlobals();
+$dispatcher = new EventDispatcher();
+$controllerResolver = new ControllerResolver();
+$argumentResolver = new ArgumentResolver();
+$kernel = new HttpKernel($dispatcher, $controllerResolver, new RequestStack(), $argumentResolver);
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
+
 
 
 class A {
